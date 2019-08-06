@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { State } from './store/reducers';
+import { loadTodos, addTodos, deleteTodo } from './store/aciions';
+import { Todo } from './models';
+import { Observable } from 'rxjs';
+import { getAllTodos } from './store/selectors';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +12,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'todo';
+  todos$: Observable<Todo[]>;
+
+  constructor(private store: Store<State>) {
+    this.todos$ = this.store.pipe(select(getAllTodos));
+  }
+
+  load() {
+    this.store.dispatch(loadTodos());
+  }
+
+  add() {
+    const todo: Todo = {
+      title: 'New todo',
+      description: 'description ',
+      isActive: false
+    };
+    const todos = [todo];
+    this.store.dispatch(addTodos({ todos }));
+  }
+
+  delete(id: string) {
+    this.store.dispatch(deleteTodo({ id }));
+  }
 }
