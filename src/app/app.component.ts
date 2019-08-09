@@ -12,10 +12,10 @@ import { getAllTodos } from './store/selectors';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  todos$: Observable<Todo[]>;
+  todos$: Observable<any>;
 
   constructor(private store: Store<State>) {
-    this.todos$ = this.store.pipe(select(getAllTodos));
+    this.todos$ = this.store.pipe(select(getAllTodos({ name: 'joseph' })));
   }
 
   load() {

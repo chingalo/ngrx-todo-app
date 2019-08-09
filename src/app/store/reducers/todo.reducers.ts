@@ -1,22 +1,23 @@
 import { Action, createReducer, on } from '@ngrx/store';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Todo } from 'src/app/models';
 import { loadTodos, addTodos, deleteTodo } from '../aciions';
 
 // state of todo
-export interface TodoState {
-  todos: Todo[];
+export interface TodoState extends EntityState<Todo> {
   isLoaded: boolean;
   isLoading: boolean;
   error: string;
 }
 
+export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
+
 // initate initial state of todo
-const initialState: TodoState = {
-  todos: [],
+const initialState: TodoState = todoAdapter.getInitialState({
   isLoaded: true,
   isLoading: false,
   error: null
-};
+});
 
 // handling of states
 
@@ -34,38 +35,30 @@ const todoReducerFuction = createReducer(
     return newState;
   }),
   on(addTodos, (state, { todos }) => {
-    let currentIndex = state.todos.length;
+    const dateTime = new Date();
+    const id = getUniqueId();
     todos = todos.map((todo: Todo) => {
-      currentIndex++;
       return {
         ...todo,
-        id: `${currentIndex}`,
-        title: `${todo.title} ${currentIndex}`,
-        description: `${todo.description} ${currentIndex}`
+        id: `${id}`,
+        title: `${todo.title} at ${dateTime}`,
+        description: `${todo.description} at ${dateTime}`
       };
     });
-    const newTodo = state.todos.concat(todos);
-    const newState = {
-      ...state,
-      todos: newTodo,
-      isLoaded: true,
-      isLoading: false,
-      error: null
-    };
-    return newState;
+    return todoAdapter.addMany(todos, state);
   }),
   on(deleteTodo, (state, { id }) => {
-    const newTodos = state.todos.filter((todo: Todo) => {
-      return todo.id !== id;
-    });
-    const newState = {
-      ...state,
-      todos: newTodos
-    };
-    return newState;
+    return todoAdapter.removeOne(id, state);
   })
 );
 
+const getUniqueId = () => {
+  const uniqueId =
+    Math.random()
+      .toString(36)
+      .substring(2) + Date.now().toString(36);
+  return uniqueId;
+};
 export function todoReducer(state: TodoState | undefined, action: Action) {
   return todoReducerFuction(state, action);
 }

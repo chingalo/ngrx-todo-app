@@ -22,9 +22,16 @@
     "@ngrx/entity": "^8.2.0",
     "@ngrx/store": "^8.2.0",
     "@ngrx/store-devtools": "^8.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "commitizen": "^2.10.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.802.0",
