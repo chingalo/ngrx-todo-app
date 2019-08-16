@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Todo } from 'src/app/models';
-import { loadTodos, addTodos, deleteTodo } from '../aciions';
+import { loadTodos, addTodos, deleteTodo } from '../actions';
 
 // state of todo
 export interface TodoState extends EntityState<Todo> {
@@ -23,16 +23,9 @@ const initialState: TodoState = todoAdapter.getInitialState({
 
 const todoReducerFuction = createReducer(
   initialState,
-  on(loadTodos, state => {
+  on(loadTodos, (state, { payload }) => {
     // change state
-    const newState = {
-      ...state,
-      isLoaded: false,
-      isLoading: true,
-      error: null
-    };
-    // return states
-    return newState;
+    return todoAdapter.addMany(payload, state);
   }),
   on(addTodos, (state, { todos }) => {
     const dateTime = new Date();
