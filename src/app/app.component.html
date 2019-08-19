@@ -1,4 +1,5 @@
 <button (click)="add()">Add </button>
+<button (click)="loadTodos()">Load Todos </button>
 <div>
   <div *ngFor="let todo of todos$|async">
     <div (click)="delete(todo.id)">

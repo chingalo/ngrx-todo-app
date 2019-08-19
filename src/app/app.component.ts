@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from './store/reducers';
-import { loadTodos, addTodos, deleteTodo } from './store/aciions';
+import { loadTodos, addTodos, deleteTodo } from './store/actions';
 import { Todo } from './models';
 import { Observable } from 'rxjs';
 import { getAllTodos } from './store/selectors';
@@ -18,8 +18,8 @@ export class AppComponent {
     this.todos$ = this.store.pipe(select(getAllTodos({ name: 'joseph' })));
   }
 
-  load() {
-    this.store.dispatch(loadTodos());
+  loadTodos() {
+    this.store.dispatch({ type: '[Todo] Load Todos' });
   }
 
   add() {
