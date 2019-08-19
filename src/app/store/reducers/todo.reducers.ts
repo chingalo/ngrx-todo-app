@@ -19,6 +19,14 @@ const initialState: TodoState = todoAdapter.getInitialState({
   error: null
 });
 
+const getUniqueId = () => {
+  const uniqueId =
+    Math.random()
+      .toString(36)
+      .substring(2) + Date.now().toString(36);
+  return uniqueId;
+};
+
 // handling of states
 
 const todoReducerFuction = createReducer(
@@ -45,13 +53,6 @@ const todoReducerFuction = createReducer(
   })
 );
 
-const getUniqueId = () => {
-  const uniqueId =
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36);
-  return uniqueId;
-};
 export function todoReducer(state: TodoState | undefined, action: Action) {
   return todoReducerFuction(state, action);
 }

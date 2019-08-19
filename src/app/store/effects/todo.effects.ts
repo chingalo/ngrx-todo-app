@@ -8,21 +8,19 @@ import * as todoActions from '../actions';
 
 @Injectable()
 export class TodoEffect {
-
-  loadTodos$ = createEffect(() => this.actions$.pipe(
-    ofType('[Todo] Load Todos'),
-    mergeMap(() => this.todoService.getTodos()
-      .pipe(
-        map((todos: Todo[]) => {
-          return todoActions.loadTodos({ payload: todos });
-        }),
-        catchError(() => EMPTY)
-      ))
-  )
+  loadTodos$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Todo] Load Todos'),
+      mergeMap(() =>
+        this.todoService.getTodos().pipe(
+          map((todos: Todo[]) => {
+            return todoActions.loadTodos({ payload: todos });
+          }),
+          catchError(() => EMPTY)
+        )
+      )
+    )
   );
 
-  constructor(
-    private actions$: Actions,
-    private todoService: TodoService
-  ) { }
+  constructor(private actions$: Actions, private todoService: TodoService) {}
 }
