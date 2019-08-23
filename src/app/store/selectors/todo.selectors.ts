@@ -1,6 +1,7 @@
-import { createSelector, props } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { getRootState, State } from '../reducers';
 import { TodoState, todoAdapter } from '../reducers/todo.reducers';
+import * as _ from 'lodash';
 
 // get selector from entity of todo adpator
 // get selectors
@@ -23,13 +24,12 @@ export const getAllTodos = (data: any) =>
   createSelector(
     getTodoState,
     (todoState: TodoState) => {
-      console.log({ data });
       const todos = selectAll(todoState);
       const todoIds = selectIds(todoState);
       const todoTotals = selectTotal(todoState);
       const todoEntities = selectEntities(todoState);
       console.log({ todos, todoIds, todoEntities, todoTotals });
-      return todos;
+      return _.orderBy(todos, 'id');
     }
   );
 
