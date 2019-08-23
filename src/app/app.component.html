@@ -1,11 +1,33 @@
-<button (click)="add()">Add </button>
-<button (click)="loadTodos()">Load Todos </button>
-<div>
-  <div *ngFor="let todo of todos$|async">
-    <div (click)="delete(todo.id)">
-      {{ todo |json}}
+<div class="container">
+  <h2>Add Todo</h2>
+  <form class="mb-5" #todoForm="ngForm" (ngSubmit)="addTodo(todoForm)">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control form-control-sm" id="title" name="title" [(ngModel)]="todo.title"
+        #todoTitle="ngModel" required [ngClass]="{'is-invalid': todoTitle.errors && todoTitle.touched}">
+      <div [hidden]="!todoTitle.errors?.required" class="invalid-feedback">Title Required</div>
     </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control form-control-sm" id="description" name="description"
+        [(ngModel)]="todo.description">
+    </div>
+    <button [disabled]="!todoForm.form.valid" type="submit" class="btn btn-primary">Add</button>
+    <button (click)="loadTodos()" type="button" class="btn btn-light ml-2">Load Todos </button>
+  </form>
+
+  <h2 class="mb-5">My Todos</h2>
+  <div *ngFor="let todo of todos$|async">
+    <div class="row">
+      <div class="col-md-10">
+        <h3>{{todo.title}} at <small>{{todo.registered | date:'shortTime'}}</small></h3>
+        <p>{{todo.description}}</p>
+      </div>
+      <div class="col-md-2">
+        <button (click)="delete(todo)" class="btn btn-danger btn-sm float-right mt-2">Delete</button>
+      </div>
+    </div>
+    <hr>
   </div>
 </div>
-
 <router-outlet></router-outlet>
