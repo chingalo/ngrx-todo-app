@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Todo } from 'src/app/models';
-import { loadTodos, addTodos, deleteTodo } from '../actions';
+import { loadTodos, addTodos, deleteTodo, errorTodo } from '../actions';
 
 // state of todo
 export interface TodoState extends EntityState<Todo> {
@@ -28,20 +28,23 @@ const todoReducerFuction = createReducer(
     return todoAdapter.addMany(payload, state);
   }),
   on(addTodos, (state, { todos }) => {
-    const dateTime = new Date();
     const id = getUniqueId();
     todos = todos.map((todo: Todo) => {
       return {
         ...todo,
         id: `${id}`,
-        title: `${todo.title} at ${dateTime}`,
-        description: `${todo.description} at ${dateTime}`
+        title: `${todo.title}`,
+        description: todo.description ? `${todo.description}` : ''
       };
     });
     return todoAdapter.addMany(todos, state);
   }),
   on(deleteTodo, (state, { id }) => {
     return todoAdapter.removeOne(id, state);
+  }),
+  on(errorTodo, (state, error: Error) => {
+    console.log(error);
+    return state
   })
 );
 

@@ -6,6 +6,7 @@ export const addTodos = createAction(
   props<{ todos: Todo[] }>()
 );
 export const loadTodos = createAction('[Todo] load todo', props<{ payload: Todo[] }>());
+export const errorTodo = createAction('[ToDo] error todo', props<Error>());
 export const deleteTodo = createAction(
   '[Todo] delete todo',
   props<{ id: string }>()

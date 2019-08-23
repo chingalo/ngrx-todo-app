@@ -23,8 +23,11 @@
     "@ngrx/entity": "^8.2.0",
     "@ngrx/store": "^8.2.0",
     "@ngrx/store-devtools": "^8.2.0",
+    "bootstrap": "^4.3.1",
     "commitizen": "^2.10.1",
     "cz-conventional-changelog": "^2.1.0",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

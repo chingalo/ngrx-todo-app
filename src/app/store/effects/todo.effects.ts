@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { TodoService } from 'src/app/services/todo.service';
 import { Todo } from 'src/app/models';
@@ -16,7 +16,9 @@ export class TodoEffect {
         map((todos: Todo[]) => {
           return todoActions.loadTodos({ payload: todos });
         }),
-        catchError(() => EMPTY)
+        catchError((error: Error) => {
+          return of(todoActions.errorTodo(error))
+        })
       ))
   )
   );
