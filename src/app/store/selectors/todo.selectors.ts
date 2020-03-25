@@ -12,30 +12,44 @@ const {
   selectTotal
 } = todoAdapter.getSelectors();
 
-// get state of todo
-const getTodoState = createSelector(
-  getRootState,
-  (state: State) => {
-    return state.todos;
-  }
-);
+const getTodoState = createSelector(getRootState, (state: State) => {
+  return state.todos;
+});
 
 export const getAllTodos = (data: any) =>
-  createSelector(
-    getTodoState,
-    (todoState: TodoState) => {
-      const todos = selectAll(todoState);
-      const todoIds = selectIds(todoState);
-      const todoTotals = selectTotal(todoState);
-      const todoEntities = selectEntities(todoState);
-      console.log({ todos, todoIds, todoEntities, todoTotals });
-      return _.orderBy(todos, 'id');
-    }
-  );
+  createSelector(getTodoState, (todoState: TodoState) => {
+    console.log({ data });
+    const todos = selectAll(todoState);
+    // return _.orderBy(todos, "id");
+    return todos;
+  });
+
+const getTotal = createSelector(getTodoState, (todostate: TodoState) => {
+  return selectTotal(todostate);
+});
+
+const getTodoIds = createSelector(getTodoState, (todostate: TodoState) => {
+  return selectIds(todostate);
+});
+
+const getTodoEntities = createSelector(getTodoState, (todostate: TodoState) => {
+  return selectEntities(todostate);
+});
 
 export const getLoadingStatus = createSelector(
   getTodoState,
   (todoState: TodoState) => {
-    return todoState.isLoading;
+    return todoState.isLoaded;
+  }
+);
+
+export const getTodoCurrentState = createSelector(
+  getAllTodos,
+  getTotal,
+  getTodoIds,
+  getTodoEntities,
+  (todos, total, ids, entities) => {
+    console.log({ todos, total, ids, entities });
+    return { todos, total, ids, entities };
   }
 );

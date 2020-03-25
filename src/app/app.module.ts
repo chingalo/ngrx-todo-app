@@ -9,6 +9,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { TodoEffect } from './store/effects/todo.effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +28,8 @@ import { TodoEffect } from './store/effects/todo.effects';
       maxAge: 25,
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([TodoEffect])
+    EffectsModule.forRoot([TodoEffect]),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,7 +4,7 @@ import { State } from './store/reducers';
 import { loadTodos, addTodos, deleteTodo } from './store/actions';
 import { Todo } from './models';
 import { Observable } from 'rxjs';
-import { getAllTodos } from './store/selectors';
+import { getAllTodos, getTodoCurrentState } from './store/selectors';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +14,11 @@ import { getAllTodos } from './store/selectors';
 export class AppComponent {
   todos$: Observable<any>;
 
+  currentStateOfTodos$: Observable<any>;
+
   constructor(private store: Store<State>) {
     this.todos$ = this.store.pipe(select(getAllTodos({ name: 'joseph' })));
+    this.currentStateOfTodos$ = this.store.pipe(select(getTodoCurrentState));
   }
 
   loadTodos() {
